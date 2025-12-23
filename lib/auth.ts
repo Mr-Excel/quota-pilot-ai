@@ -43,17 +43,10 @@ export const authOptions: NextAuthConfig = {
   pages: {
     signIn: "/login",
   },
-  cookies: {
-    sessionToken: {
-      name: `next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
-    },
-  },
+  // Trust host for Vercel deployment (NextAuth v5 requirement)
+  trustHost: true,
+  // Let NextAuth v5 handle cookies automatically - it detects production and sets secure cookies
+  // No need to manually configure cookie names for v5
   callbacks: {
     async jwt({ token, user }: { token: any, user: any }) {
       if (user) {

@@ -9,12 +9,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Let getToken auto-detect the cookie name (NextAuth v5 handles this automatically)
   const token = await getToken({
     req,
     secret: env.NEXTAUTH_SECRET,
-    cookieName: process.env.NODE_ENV === "production" 
-      ? "__Secure-next-auth.session-token" 
-      : "next-auth.session-token",
   });
 
   if (!token) {

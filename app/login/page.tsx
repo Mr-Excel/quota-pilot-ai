@@ -35,8 +35,9 @@ export default function LoginPage() {
       }
       
       if (result?.ok) {
-        // Small delay to ensure session is set
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Wait a moment for the session cookie to be set, then redirect
+        // Using window.location ensures a full page reload which properly reads the cookie
+        await new Promise((resolve) => setTimeout(resolve, 200));
         window.location.href = "/dashboard";
       } else {
         toast.error("Login failed. Please try again.");
