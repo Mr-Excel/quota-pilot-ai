@@ -38,9 +38,21 @@ export const authOptions: NextAuthConfig = {
   ],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
     signIn: "/login",
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   callbacks: {
     async jwt({ token, user }: { token: any, user: any }) {
@@ -58,11 +70,20 @@ export const authOptions: NextAuthConfig = {
       return session;
     },
     async redirect({ url, baseUrl }: { url: any, baseUrl: any }) {
-      // Redirect to dashboard after login
-      if (url.startsWith(baseUrl)) {
+      // If redirecting to login, go to dashboard instead
+      if (url.includes("/login")) {
         return `${baseUrl}/dashboard`;
       }
-      return baseUrl;
+      // If it's a relative URL, make it absolute
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      // If it's already an absolute URL on our domain, allow it
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      // Default to dashboard
+      return `${baseUrl}/dashboard`;
     },
   },
   secret: env.NEXTAUTH_SECRET,

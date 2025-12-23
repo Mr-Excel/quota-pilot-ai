@@ -30,9 +30,17 @@ export default function LoginPage() {
 
       if (result?.error) {
         toast.error("Invalid email or password");
+        setIsLoading(false);
+        return;
+      }
+      
+      if (result?.ok) {
+        // Small delay to ensure session is set
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        window.location.href = "/dashboard";
       } else {
-        router.push("/dashboard");
-        router.refresh();
+        toast.error("Login failed. Please try again.");
+        setIsLoading(false);
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
