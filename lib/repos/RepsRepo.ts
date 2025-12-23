@@ -5,17 +5,19 @@ import mongoose from "mongoose";
 export class RepsRepo {
   static async findByUserId(userId: string): Promise<IRep[]> {
     await connectDB();
-    return Rep.find({ userId: new mongoose.Types.ObjectId(userId) })
+    const reps = await Rep.find({ userId: new mongoose.Types.ObjectId(userId) })
       .sort({ createdAt: -1 })
       .lean();
+    return reps as unknown as IRep[];
   }
 
   static async findById(id: string, userId: string): Promise<IRep | null> {
     await connectDB();
-    return Rep.findOne({
+    const rep = await Rep.findOne({
       _id: new mongoose.Types.ObjectId(id),
       userId: new mongoose.Types.ObjectId(userId),
     }).lean();
+    return rep as unknown as IRep | null;
   }
 
   static async create(data: {
@@ -39,7 +41,7 @@ export class RepsRepo {
     data: Partial<IRep>
   ): Promise<IRep | null> {
     await connectDB();
-    return Rep.findOneAndUpdate(
+    const rep = await Rep.findOneAndUpdate(
       {
         _id: new mongoose.Types.ObjectId(id),
         userId: new mongoose.Types.ObjectId(userId),
@@ -47,6 +49,7 @@ export class RepsRepo {
       data,
       { new: true }
     ).lean();
+    return rep as unknown as IRep | null;
   }
 
   static async delete(id: string, userId: string): Promise<boolean> {

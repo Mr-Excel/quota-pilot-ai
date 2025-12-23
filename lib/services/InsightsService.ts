@@ -76,10 +76,12 @@ export class InsightsService {
     >();
 
     calls.forEach((call) => {
-      const repId = typeof call.repId === "object" ? call.repId._id.toString() : call.repId.toString();
+      const repId = typeof call.repId === "object" && call.repId !== null
+        ? (call.repId as any)._id?.toString() || String(call.repId)
+        : String(call.repId);
       const repName =
-        typeof call.repId === "object" && "name" in call.repId
-          ? call.repId.name
+        typeof call.repId === "object" && call.repId !== null && "name" in call.repId
+          ? String((call.repId as any).name)
           : "Unknown Rep";
 
       if (!repMap.has(repId)) {

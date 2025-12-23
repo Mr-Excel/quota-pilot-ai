@@ -4,12 +4,14 @@ import { connectDB } from "@/lib/db/connection";
 export class UsersRepo {
   static async findByEmail(email: string): Promise<IUser | null> {
     await connectDB();
-    return User.findOne({ email: email.toLowerCase() }).lean();
+    const user = await User.findOne({ email: email.toLowerCase() }).lean();
+    return user as unknown as IUser | null;
   }
 
   static async findById(id: string): Promise<IUser | null> {
     await connectDB();
-    return User.findById(id).lean();
+    const user = await User.findById(id).lean();
+    return user as unknown as IUser | null;
   }
 
   static async create(data: {
@@ -26,7 +28,8 @@ export class UsersRepo {
 
   static async update(id: string, data: Partial<IUser>): Promise<IUser | null> {
     await connectDB();
-    return User.findByIdAndUpdate(id, data, { new: true }).lean();
+    const user = await User.findByIdAndUpdate(id, data, { new: true }).lean();
+    return user as unknown as IUser | null;
   }
 }
 

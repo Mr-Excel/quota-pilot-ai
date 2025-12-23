@@ -37,20 +37,22 @@ export class CallsRepo {
       if (filter.maxScore !== undefined) query["score.overall"].$lte = filter.maxScore;
     }
 
-    return Call.find(query)
+    const calls = await Call.find(query)
       .populate("repId", "name roleTitle")
       .sort({ occurredAt: -1 })
       .lean();
+    return calls as unknown as ICall[];
   }
 
   static async findById(id: string, userId: string): Promise<ICall | null> {
     await connectDB();
-    return Call.findOne({
+    const call = await Call.findOne({
       _id: new mongoose.Types.ObjectId(id),
       userId: new mongoose.Types.ObjectId(userId),
     })
       .populate("repId", "name roleTitle")
       .lean();
+    return call as unknown as ICall | null;
   }
 
   static async create(data: {
@@ -79,7 +81,7 @@ export class CallsRepo {
     data: Partial<ICall>
   ): Promise<ICall | null> {
     await connectDB();
-    return Call.findOneAndUpdate(
+    const call = await Call.findOneAndUpdate(
       {
         _id: new mongoose.Types.ObjectId(id),
         userId: new mongoose.Types.ObjectId(userId),
@@ -89,6 +91,7 @@ export class CallsRepo {
     )
       .populate("repId", "name roleTitle")
       .lean();
+    return call as unknown as ICall | null;
   }
 
   static async delete(id: string, userId: string): Promise<boolean> {
@@ -119,7 +122,7 @@ export class CallsRepo {
 
     const objectionCounts: Record<string, number> = {};
     calls.forEach((call) => {
-      call.objections?.forEach((obj) => {
+      call.objections?.forEach((obj: { type: string }) => {
         objectionCounts[obj.type] = (objectionCounts[obj.type] || 0) + 1;
       });
     });
