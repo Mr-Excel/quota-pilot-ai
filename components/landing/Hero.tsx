@@ -50,10 +50,18 @@ export const Hero = () => {
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            <Button variant="outline" size="lg">
-              <Play className="mr-2 h-4 w-4" />
-              Watch Demo
-            </Button>
+            <Link
+              href="https://www.loom.com/share/259d6e0af2314429b3a4f2059a05d1c7"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="outline" size="lg" asChild>
+                <>
+                  <Play className="mr-2 h-4 w-4" />
+                  Watch Demo
+                </>
+              </Button>
+            </Link>
           </motion.div>
 
           <motion.div
