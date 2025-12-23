@@ -38,7 +38,7 @@ export const Navbar = () => {
                 Login
               </Button>
             </Link>
-            <Link href="/login">
+            <Link href="/signup">
               <Button size="sm">Get Started</Button>
             </Link>
           </div>
@@ -68,7 +68,7 @@ export const Navbar = () => {
                 Login
               </Button>
             </Link>
-            <Link href="/login">
+            <Link href="/signup">
               <Button className="w-full">Get Started</Button>
             </Link>
           </div>
