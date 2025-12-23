@@ -84,7 +84,7 @@ export const Pricing = () => {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Link href="/login" className="w-full">
+                  <Link href="/signup" className="w-full">
                     <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
                       Start Free Trial
                     </Button>
