@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export const Hero = () => {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted/20 py-20 sm:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,9 +64,22 @@ export const Hero = () => {
           >
             <div className="relative mx-auto max-w-5xl rounded-lg border bg-card p-2 shadow-2xl">
               <div className="aspect-video w-full rounded-md bg-muted flex items-center justify-center">
-                <div className="text-center">
-                  <Image src={'/Dashboard.png'} alt="Dashboard Preview" width={1000} height={1000}/>
-                </div>
+                {!imageError ? (
+                  <Image 
+                    src="/Dashboard.PNG" 
+                    alt="Dashboard Preview" 
+                    width={1200} 
+                    height={800}
+                    className="rounded-md object-contain"
+                    priority
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="text-center p-8">
+                    <p className="text-muted-foreground text-lg">Dashboard Preview</p>
+                    <p className="text-sm text-muted-foreground mt-2">Visual representation of QuotaPilot Ai dashboard</p>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
